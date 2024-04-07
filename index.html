@@ -6,28 +6,28 @@
 <title>Oto Tools</title>
 <style>
   body {
-    background-color: #282b30; /* Updated background color */
-    margin: 0; /* Remove default margin */
-    overflow: hidden; /* Prevent scrolling */
+    background-color: #282b30;
+    margin: 0;
+    overflow: hidden;
   }
   #canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1; /* Place canvas behind other content */
+    z-index: -1;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Allow clicks to go through the canvas */
+    pointer-events: none;
   }
   .container {
     margin: 50px auto;
     text-align: center;
-    z-index: 1; /* Ensure content is on top of canvas */
+    z-index: 1;
   }
   .container h2 {
-    color: white; /* Text color */
-    font-size: 2em; /* 2x bigger font size */
-    font-family: Arial, sans-serif; /* Right font family */
+    color: white;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
   }
   .button {
     background-color: #4CAF50;
@@ -46,8 +46,8 @@
     box-shadow: 0 0 10px #4CAF50;
     transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     box-sizing: border-box;
-    width: 200px; /* Fixed width */
-    height: 50px; /* Fixed height */
+    width: 200px;
+    height: 50px;
   }
   .button:hover {
     background-color: #388E3C;
@@ -75,114 +75,114 @@ const ctx = canvas.getContext("2d");
 let w, h, particles;
 let particleDistance = 40;
 let mouse = {
-	x: undefined,
-	y: undefined,
-	radius: 100
+    x: undefined,
+    y: undefined,
+    radius: 100
 }
 
 function init() {
-	resizeReset();
-	animationLoop();
+    resizeReset();
+    animationLoop();
 }
 
 function resizeReset() {
-	w = canvas.width = window.innerWidth;
-	h = canvas.height = window.innerHeight;
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
 
-	particles = [];
-	for (let y = (((h - particleDistance) % particleDistance) + particleDistance) / 2; y < h; y += particleDistance) {
-		for (let x = (((w - particleDistance) % particleDistance) + particleDistance) / 2; x < w; x += particleDistance) {
-			particles.push(new Particle(x, y));
-		}
-	}
+    particles = [];
+    for (let y = (((h - particleDistance) % particleDistance) + particleDistance) / 2; y < h; y += particleDistance) {
+        for (let x = (((w - particleDistance) % particleDistance) + particleDistance) / 2; x < w; x += particleDistance) {
+            particles.push(new Particle(x, y));
+        }
+    }
 }
 
 function animationLoop() {
-	ctx.clearRect(0, 0, w, h);
-	drawScene();
-	requestAnimationFrame(animationLoop);
+    ctx.clearRect(0, 0, w, h);
+    drawScene();
+    requestAnimationFrame(animationLoop);
 }
 
 function drawScene() {
-	for (let i = 0; i < particles.length; i++) {
-		particles[i].update();
-		particles[i].draw();
-	}
-	drawLine();
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+    }
+    drawLine();
 }
 
 function drawLine() {
-	for (let a = 0; a < particles.length; a++) {
-		for (let b = a; b < particles.length; b++) {
-			let dx = particles[a].x - particles[b].x;
-			let dy = particles[a].y - particles[b].y;
-			let distance = Math.sqrt(dx * dx + dy * dy);
+    for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+            let dx = particles[a].x - particles[b].x;
+            let dy = particles[a].y - particles[b].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
 
-			if (distance < particleDistance * 1.5) {
-				opacity = 1 - (distance / (particleDistance * 1.5));
-				ctx.strokeStyle = "rgba(66,69,73," + opacity + ")";
-				ctx.lineWidth = 2;
-				ctx.beginPath();
-				ctx.moveTo(particles[a].x, particles[a].y);
-				ctx.lineTo(particles[b].x, particles[b].y);
-				ctx.stroke();
-			}
-		}
-	}
+            if (distance < particleDistance * 1.5) {
+                opacity = 1 - (distance / (particleDistance * 1.5));
+                ctx.strokeStyle = "rgba(66,69,73," + opacity + ")";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+            }
+        }
+    }
 }
 
 function mousemove(e) {
-	mouse.x = e.x;
-	mouse.y = e.y;
+    mouse.x = e.x;
+    mouse.y = e.y;
 }
 
 function mouseout() {
-	mouse.x = undefined;
-	mouse.y = undefined;
+    mouse.x = undefined;
+    mouse.y = undefined;
 }
 
 class Particle {
-	constructor(x, y) {
-		this.x = x;
-		this.y = y;
-		this.size = 4;
-		this.baseX = this.x;
-		this.baseY = this.y;
-		this.speed = (Math.random() * 25) + 5;
-	}
-	draw() {
-		ctx.fillStyle = "rgba(66,69,73,1)";
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-		ctx.closePath();
-		ctx.fill();
-	}
-	update() {
-		let dx = mouse.x - this.x;
-		let dy = mouse.y - this.y;
-		let distance = Math.sqrt(dx * dx + dy * dy);
-		let maxDistance = mouse.radius;
-		let force = (maxDistance - distance) / maxDistance; // 0 ~ 1
-		let forceDirectionX = dx / distance;
-		let forceDirectionY = dy / distance;
-		let directionX = forceDirectionX * force * this.speed;
-		let directionY = forceDirectionY * force * this.speed;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 4;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.speed = (Math.random() * 25) + 5;
+    }
+    draw() {
+        ctx.fillStyle = "rgba(66,69,73,1)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+    }
+    update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        let maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+        let forceDirectionX = dx / distance;
+        let forceDirectionY = dy / distance;
+        let directionX = forceDirectionX * force * this.speed;
+        let directionY = forceDirectionY * force * this.speed;
 
-		if (distance < mouse.radius) {
-			this.x -= directionX;
-			this.y -= directionY;
-		} else {
-			if (this.x !== this.baseX) {
-				let dx = this.x - this.baseX;
-				this.x -= dx / 10;
-			}
-			if (this.y !== this.baseY) {
-				let dy = this.y - this.baseY;
-				this.y -= dy / 10;
-				}
-			}
-		}
-	}
+        if (distance < mouse.radius) {
+            this.x -= directionX;
+            this.y -= directionY;
+        } else {
+            if (this.x !== this.baseX) {
+                let dx = this.x - this.baseX;
+                this.x -= dx / 10;
+            }
+            if (this.y !== this.baseY) {
+                let dy = this.y - this.baseY;
+                this.y -= dy / 10;
+            }
+        }
+    }
+}
 
 init();
 window.addEventListener("resize", resizeReset);

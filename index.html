@@ -21,7 +21,9 @@
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
     margin: 10px 10px;
     cursor: pointer;
@@ -29,6 +31,8 @@
     box-shadow: 0 0 10px #4CAF50;
     transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     box-sizing: border-box;
+    width: 200px;
+    height: 50px;
   }
   .button:hover {
     background-color: #388E3C;
@@ -36,17 +40,17 @@
     transform: scale(1.2);
   }
 </style>
-<meta property="og:title" content="Download Files">
+<meta property="og:title" content="Oto Tools">
 <meta property="og:image" content="https://media.discordapp.net/attachments/1128697437461164103/1144200149124530226/3dgifmaker12463.gif?ex=6620e66d&amp;is=660e716d&amp;hm=1c800c6e1b371cc60378d7a3604dd4fdf5b82483fd63aab861841f01365eb4e4">
 </head>
 <body>
 <div class="container">
-  <h2>Download Files</h2>
-  <a href="file1.pdf" download><button class="button"><span>Server Nuker</span></button></a>
-  <a href="file2.zip" download><button class="button"><span>Download File 2</span></button></a>
-  <a href="file3.docx" download><button class="button"><span>Download File 3</span></button></a>
-  <a href="file4.txt" download><button class="button"><span>Download File 4</span></button></a>
-  <a href="file5.png" download><button class="button"><span>Download File 5</span></button></a>
+  <h2>Download Tools</h2>
+  <a href="nuker.zip" download><button class="button">Server Nuker</button></a>
+  <a href="coming_soon_1.txt" download><button class="button" disabled>Coming Soon...</button></a>
+  <a href="coming_soon_2.txt" download><button class="button" disabled>Coming Soon...</button></a>
+  <a href="coming_soon_3.txt" download><button class="button" disabled>Coming Soon...</button></a>
+  <a href="coming_soon_4.txt" download><button class="button" disabled>Coming Soon...</button></a>
 </div>
 </body>
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download Files</title>
+<style>
+  body {
+    background-color: #282b30;
+    font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: white;
+  }
+  .container {
+    margin: 50px auto;
+    text-align: center;
+  }
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px; /* Original padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* Original font size */
+    margin: 10px 10px; /* Increased margin for more space */
+    cursor: pointer;
+    border-radius: 10px; /* Adding rounded corners */
+    box-shadow: 0 0 10px #4CAF50; /* Adding glow effect */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Adding transition for smooth effect */
+    box-sizing: border-box; /* Ensure padding is included in the button size */
+  }
+  .button:hover {
+    background-color: #388E3C; /* Darker green on hover */
+    box-shadow: 0 0 20px #388E3C; /* Increasing glow on hover */
+  }
+  .button:hover span {
+    transform: scale(1.2); /* Increase text size on hover */
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Download Files</h2>
+  <a href="nuker.zip" download><button class="button"><span>‎ ‎ ‎ Oto Nuker ‎ ‎ ‎  </span></button></a>
+  <a href="file2.zip" download><button class="button"><span>Coming Soon</span></button></a>
+  <a href="file3.docx" download><button class="button"><span>Coming Soon</span></button></a>
+  <a href="file4.txt" download><button class="button"><span>Coming Soon</span></button></a>
+  <a href="file5.png" download><button class="button"><span>Coming Soon</span></button></a>
+</div>
+
+</body>
+</html>

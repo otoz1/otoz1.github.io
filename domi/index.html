@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oto Tools</title>
+<link rel="icon" href="https://cdn.discordapp.com/attachments/1224407557699928074/1226695720757887116/b5c80cc206a7efd4db0762b8fd80cc46-hammer-icon-simple.png?ex=6625b46a&is=66133f6a&hm=187714a57ad8076bdaaa7bc6cc8f1cc4b4ed7230d049110378af091773ac2a7d&">
+<style>
+  body {
+    background-color: #282b30;
+    margin: 0;
+    overflow: hidden;
+  }
+  #canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .container {
+    margin: 50px auto;
+    text-align: center;
+    z-index: 1;
+  }
+  .container h2 {
+    color: white;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+  }
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #4CAF50;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box;
+    width: 200px;
+    height: 50px;
+  }
+  .button:hover {
+    background-color: #388E3C;
+    box-shadow: 0 0 20px #388E3C;
+    transform: scale(1.2);
+  }
+</style>
+<meta property="og:title" content="Oto Tools">
+<meta property="og:image" content="https://media.discordapp.net/attachments/1128697437461164103/1144200149124530226/3dgifmaker12463.gif?ex=6620e66d&amp;is=660e716d&amp;hm=1c800c6e1b371cc60378d7a3604dd4fdf5b82483fd63aab861841f01365eb4e4">
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="container">
+  <link rel="icon" href="https://media.discordapp.net/attachments/1128697437461164103/1144200149124530226/3dgifmaker12463.gif?ex=6620e66d&amp;is=660e716d&amp;hm=1c800c6e1b371cc60378d7a3604dd4fdf5b82483fd63aab861841f01365eb4e4">
+  <h2>Download Tools</h2>
+  <a href="nuker.zip" download><button class="button">Server Nuker</button></a>
+  <a href="system_grabber.zip" download><button class="button">System Grabber</button></a>
+  <a href="coming_soon_2.txt" download><button class="button" disabled>Coming Soon...</button></a>
+  <a href="coming_soon_3.txt" download><button class="button" disabled>Coming Soon...</button></a>
+  <a href="coming_soon_4.txt" download><button class="button" disabled>Coming Soon...</button></a>
+</div>
+<script>
+const canvas = document.querySelector("#canvas");
+const ctx = canvas.getContext("2d");
+
+let w, h, particles;
+let particleDistance = 40;
+let mouse = {
+    x: undefined,
+    y: undefined,
+    radius: 100
+}
+
+function init() {
+    resizeReset();
+    animationLoop();
+}
+
+function resizeReset() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+
+    particles = [];
+    for (let y = (((h - particleDistance) % particleDistance) + particleDistance) / 2; y < h; y += particleDistance) {
+        for (let x = (((w - particleDistance) % particleDistance) + particleDistance) / 2; x < w; x += particleDistance) {
+            particles.push(new Particle(x, y));
+        }
+    }
+}
+
+function animationLoop() {
+    ctx.clearRect(0, 0, w, h);
+    drawScene();
+    requestAnimationFrame(animationLoop);
+}
+
+function drawScene() {
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+    }
+    drawLine();
+}
+
+function drawLine() {
+    for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+            let dx = particles[a].x - particles[b].x;
+            let dy = particles[a].y - particles[b].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < particleDistance * 1.5) {
+                opacity = 1 - (distance / (particleDistance * 1.5));
+                ctx.strokeStyle = "rgba(66,69,73," + opacity + ")";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function mousemove(e) {
+    mouse.x = e.x;
+    mouse.y = e.y;
+}
+
+function mouseout() {
+    mouse.x = undefined;
+    mouse.y = undefined;
+}
+
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 4;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.speed = (Math.random() * 25) + 5;
+    }
+    draw() {
+        ctx.fillStyle = "rgba(66,69,73,1)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+    }
+    update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        let maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+        let forceDirectionX = dx / distance;
+        let forceDirectionY = dy / distance;
+        let directionX = forceDirectionX * force * this.speed;
+        let directionY = forceDirectionY * force * this.speed;
+
+        if (distance < mouse.radius) {
+            this.x -= directionX;
+            this.y -= directionY;
+        } else {
+            if (this.x !== this.baseX) {
+                let dx = this.x - this.baseX;
+                this.x -= dx / 10;
+            }
+            if (this.y !== this.baseY) {
+                let dy = this.y - this.baseY;
+                this.y -= dy / 10;
+            }
+        }
+    }
+}
+
+init();
+window.addEventListener("resize", resizeReset);
+window.addEventListener("mousemove", mousemove);
+window.addEventListener("mouseout", mouseout);
+</script>
+</body>
+</html>

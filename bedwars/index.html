@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats Hypixel Bedwars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+
+
+        #stats {
+            margin: auto;
+            text-align: center;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+
+        .stat-item {
+            margin: 10px 0;
+            color: #ffffff;
+        }
+
+        .player-skin {
+            margin: 20px 0;
+        }
+        h1 {
+            color: #ffffff;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #0000;
+            border-radius: 5px;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6200ea;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search for Hypixel Bedwars Stats</h1>
+    <input type="text" id="username" placeholder="Minecraft Name">
+    <button onclick="fetchStats()">Search</button>
+    <div id="stats"></div>
+    <script>
+        async function fetchStats() {
+            const username = document.getElementById('username').value;
+            const apiKey = 'fb71a523-b57b-4257-8c78-3b8fde5b4d0a';
+            const url = `https://api.hypixel.net/player?key=${apiKey}&name=${username}`;
+            const response = await fetch(url);
+            if (!response.ok) {   
+                document.getElementById('stats').innerHTML = 'Error : Try again later';
+                return;
+            }
+            const data = await response.json();
+            const stats = data.player.stats.Bedwars;
+
+            const statsDiv = document.getElementById('stats');
+            statsDiv.innerHTML = `
+                <div class="stat-item"><strong>Player:</strong> ${data.player.displayname}</div>
+                <div class="player-skin"><img src="https://mineskin.eu/armor/body/${username}/100.png" alt="Skin du joueur"></div>
+                <div class="stat-item"><strong>Tokens:</strong> ${stats.coins}</div>
+                <div class="stat-item"><strong>Game played:</strong> ${stats.games_played_bedwars}</div>
+                <div class="stat-item"><strong>Wins:</strong> ${stats.wins_bedwars}</div>
+                <div class="stat-item"><strong>Losses:</strong> ${stats.losses_bedwars}</div>
+                <div class="stat-item"><strong>Kills:</strong> ${stats.kills_bedwars}</div>
+                <div class="stat-item"><strong>Deaths:</strong> ${stats.deaths_bedwars}</div>
+                <div class="stat-item"><strong>Final Kills:</strong> ${stats.final_kills_bedwars}</div>
+                <div class="stat-item"><strong>Final Deaths:</strong> ${stats.final_deaths_bedwars}</div>
+                <div class="stat-item"><strong>Beds Broken:</strong> ${stats.beds_broken_bedwars}</div>
+                <div class="stat-item"><strong>Beds Lost:</strong> ${stats.beds_lost_bedwars}</div>
+                <div class="stat-item"><strong>Winstreak:</strong> ${stats.winstreak}</div>
+                <div class="stat-item"><strong>Kill/Death Ratio:</strong> ${(stats.kills_bedwars / stats.deaths_bedwars).toFixed(2)}</div>
+                <div class="stat-item"><strong>Final Kill/Death Ratio:</strong> ${(stats.final_kills_bedwars / stats.final_deaths_bedwars).toFixed(2)}</div>
+            `;
+        }
+    </script>
+</body>
+</html>

